@@ -1,3 +1,4 @@
 # Auction Portal
 ## Database Systems Lab Project - Autumn 2017
-![screen]("screen.png")
+### By Krishnan R and Zaman Ishtiyaq
+![screen](screen.png)
