@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block head %}
+<title>Dashboard - Auction Portal</title>
+ {% endblock head %}
+{% block content %} {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+		<div class="alert alert-{{category}}" role="alert">
+			{{ message }}
+		</div>
+		{% endfor %} {% endif %} {% endwith %}
+<!--<script src="/static/home.js"></script>-->
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h4 class="display-4"> Your Bids</h4>
+  </div>
+</div>
+
+<div style="display: flex;flex-wrap:wrap; align-items:stretch">
+	{% for auction in auctions %}
+	<div class="card m-3" style="width: 20rem;">
+	
+		<div class="card-header">
+			<span class="card-title h4">{{auction.name}}</span>
+		</div>
+			
+		<div class="card-body">
+			<span class="badge badge-info mx-1">${{auction.bid_amount}} Your Bid </span><span class="badge badge-warning mx-1">Bid placed on {{auction.bid_time}}</span>
+			
+		</div>
+		
+	</div>
+	{% endfor %}
+
+</div>
+
+
+
+
+
+{% endblock content %}

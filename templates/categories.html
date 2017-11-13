@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+<meta http-equiv="refresh" content="10;url=/categories" /> 
+<title>Categories - Auction Portal</title>
+{% endblock head %} 
+
+{% block content %} {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+<div class="alert alert-{{category}}" role="alert">
+	{{ message }}
+</div>
+{% endfor %} {% endif %} {% endwith %}
+<!--<script src="/static/home.js"></script>-->
+
+<div class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<h4 class="display-4"> Categories </h4>
+	</div>
+</div>
+
+{% for d in data %}
+{% if d.data %}
+<div class="container">
+	<div class ="jumbotron text-center p-2"><span class="h4">{{d.name}}</span></div>
+	<div style="display: flex;flex-wrap:nowrap; align-items:stretch">
+
+		{% for auction in d.data %}
+		<div class="card m-3" style="width: 20rem;">
+			<div class="card-header">
+				<span class="badge badge-info mx-1">{{auction.no_bids}} Bids</span>
+				<span class="badge badge-warning mx-1">Start ${{auction.start_price}}</span>
+				<span class="badge badge-success mx-1">Current ${{auction.max_bid}}</span>
+			</div>
+
+
+			<div id="carousel{{auction.auction_id}}" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+							{% if auction.picture1 %}
+					<img src="{{ auction.picture1}}" class="d-block w-100" height="200">
+					{% else %}
+					<img src="../static/potato.jpeg" class="d-block w-100" height="200">
+					{% endif %}
+						
+					</div>
+					<div class="carousel-item">
+						{% if auction.picture2 %}
+					<img src="{{ auction.picture2}}" class="d-block w-100" height="200">
+					{% else %}
+					<img src="../static/potato.jpeg" class="d-block w-100" height="200">
+					{% endif %}
+					</div>
+					<div class="carousel-item">
+							{% if auction.picture3 %}
+					<img src="{{ auction.picture3}}" class="d-block w-100" height="200">
+					{% else %}
+					<img src="../static/potato.jpeg" class="d-block w-100" height="200">
+					{% endif %}
+					</div>
+				</div>
+			</div>
+
+			<a class="carousel-control-prev" href="#carousel{{auction.auction_id}}" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+			<a class="carousel-control-next" href="#carousel{{auction.auction_id}}" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+
+
+
+
+
+			<div class="card-body">
+				<span class="card-title h4">{{auction.name}}</span><span class="badge badge-dark mx-1 float-right"> +${{auction.increment_price}}</span>
+				<div class="text-secondary" style="font-size:0.9em">
+					<img src="../static/profile-icon.jpg" class="rounded-circle d-inline-block align-top mr-1" width="20" height="20"> {{auction.admin_name}}
+				</div>
+				<p class="card-text">{{auction.description}}</p>
+
+			</div>
+			{% if auction.max_bid %}
+			<div class="text list-group-item" style="font-size:0.9em;">
+				Winning
+				<img src="../static/profile-icon.jpg" class="rounded-circle d-inline-block align-top mr-1" width="20" height="20"> {{auction.max_bidder_name}}
+				<span class="badge badge-info mx-1">${{auction.max_bid}}</span>
+			</div>
+			{% endif %}
+
+			<div class="card-footer">
+				{% if auction.admin_id!=session.user_ID %}
+				<form method="post" action="/bid" class="form-inline input-group p-0">
+					<span class="input-group-addon">$</span>
+					<input type="number" name="bid_amount" min="{% if auction.max_bid %}{{auction.increment_price + auction.max_bid}}{% else %}{{ auction.start_price }}{% endif %}" value="{% if auction.max_bid %}{{auction.increment_price + auction.max_bid}}{% else %}{{ auction.start_price }}{% endif %}"
+					 max="1000000" class="form-control">
+					<input type="hidden" value="{{auction.auction_id}}" name="auction_id">
+					<span class="input-group-btn">
+    				<button type="button-primary" class="btn btn-primary">Bid </button>	
+      			</span>
+
+				</form>
+				{% endif %}
+			</div>
+		</div>
+		{% endfor %}
+
+
+
+	</div>
+
+</div>
+{% endif %}
+{% endfor %} {% endblock content %}

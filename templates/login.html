@@ -1,43 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block title %}Login{% endblock title %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Auction Portal</title>
+{% block content %}
+	<div class="jumbotron text-center">
+		<h1>The Auction Portal</h1>
+		<p>Sold! - Auctions made easy!</p>
+	</div>
 
+	<form class="container" method="post" action="/login">
+		{% if error %}
+		<div class="alert alert-danger" role="alert">
+			{{ error }}
+		</div>
+		{% endif %} {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+		<div class="alert alert-{{category}} container" role="alert">
+			{{ message }}
+		</div>
+		{% endfor %} {% endif %} {% endwith %}
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		<div class="form-group">
+			<label for="email">Email address:</label>
+			<input type="email" class="form-control" id="email" name="email">
+		</div>
+		<div class="form-group">
+			<label for="pwd">Password:</label>
+			<input type="password" class="form-control" id="pwd" name="password">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
 
-</head>
-
-<body>
-
-    <div class="jumbotron text-center">
-        <h1>The Auction Portal</h1>
-        <p>Sold! - Auctions made easy!</p>
-    </div>
-    
-    <form class="container" method="post" target="/login">
-  <div class="form-group">
-    <label for="email">Email address:</label>
-    <input type="email" class="form-control" id="email" name="email">
-  </div>
-  <div class="form-group">
-    <label for="pwd">Password:</label>
-    <input type="password" class="form-control" id="pwd" name="password">
-  </div>
-  <div class="form-check">
-    <label class="form-check-label">
-      <input class="form-check-input" type="checkbox"> Remember me
-    </label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-
-</body>
-
-</html>
+	</form>
+{% endblock content %}
